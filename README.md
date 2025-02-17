@@ -1,0 +1,1 @@
+An exploration of a simple, yet powerful, monorepo setup with [turborepo](https://github.com/vercel/turborepo) for modern frontend development and [uv](https://github.com/astral-sh/uv) for fast Python backend development glued together using [Task](https://github.com/go-task/task) as a task runner.
