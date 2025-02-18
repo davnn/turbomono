@@ -9,8 +9,8 @@ import typer
 app = typer.Typer()
 
 
-def return_one():
-    return 1
+def return_zero():
+    return 0
 
 
 @app.command()

@@ -3,9 +3,9 @@ name = "monorepo"
 version = "0.0.0"
 description = "Example of monorepo setup using UV"
 authors = [
-  {name="David Muhr", email="muhrdavid+github@gmail.com"}
+    { name = "David Muhr", email = "muhrdavid+github@gmail.com" }
 ]
-requires-python = ">=3.10"
+requires-python = "<3.13"
 readme = "README.md"
 dependencies = []
 
@@ -15,7 +15,7 @@ core = { workspace = true }
 
 [tool.uv.workspace]
 members = [
-  "packages/*", "apps/*"
+    "packages/*", "apps/*"
 ]
 
 [tool.uv]
@@ -23,6 +23,9 @@ dev-dependencies = [
     "pre-commit>=3.8.0",
     "ipykernel>=6.29.5",
     "pytest>=8.3.2",
+    "ruff>=0.9.6",
+    "black>=25.1.0",
+    "pyright>=1.1.394",
     # These are added as dev dependencies becuase they should be available
     #  when developing the project.
     "utils",
@@ -30,43 +33,20 @@ dev-dependencies = [
 ]
 package = false
 
+[tool.pyright]
+include = ["apps", "packages", "scripts", "tests"]
+
 [tool.black]
-line-length = 88
-exclude = '''
-^/(
-  (
-      \.eggs         # exclude a few common directories in the
-    | \.git          # root of the project
-    | \.hg
-    | \.mypy_cache
-    | \.venv
-    | _build
-    | build
-    | dist
-    | .notebooks
-    | .nox
-  )
-)
-'''
-
-[tool.isort]
-profile = "black"
-extend_skip = [".tmp", ".venv"]
-
-[tool.mypy]
-exclude = "^.tmp/"
-ignore_missing_imports = true
-
-[tool.bandit]
-skips = ['B101']
+target-version = ["py312"]
+line-length = 120
 
 [tool.ruff]
-lint.ignore = ["E501"]
+include = ["apps/**", "packages/**", "scripts/**", "tests/**"]
 extend-exclude = [
-  "__pycache__",
-  "docs",
-  "site",
-  ".tmp"
+    "__pycache__",
+    "docs",
+    "site",
+    ".tmp"
 ]
 
 [tool.pytest.ini_options]

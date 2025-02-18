@@ -1,0 +1,95 @@
+version: "3"
+
+env:
+  NPM: pnpm
+
+vars:
+  JS_DIR: modules_js
+  PY_DIR: modules_py
+
+tasks:
+  npm-run:
+    dir: "{{.JS_DIR}}"
+    internal: true
+    cmd: "{{.NPM}} run {{.CMD}}"
+
+  install-js:
+    cmds:
+      - task: npm-run
+        vars: { CMD: "install" }
+
+  build-js:
+    cmds:
+      - task: npm-run
+        vars: { CMD: "build" }
+
+  run-js:
+    cmds:
+      - task: npm-run
+        vars: { CMD: "dev" }
+
+  lint-js:
+    cmds:
+      - task: npm-run
+        vars: { CMD: "lint" }
+
+  format-js:
+    cmds:
+      - task: npm-run
+        vars: { CMD: "format" }
+
+  typing-js:
+    cmds:
+      - task: npm-run
+        vars: { CMD: "typing" }
+
+  uv-run:
+    dir: "{{.PY_DIR}}"
+    internal: true
+    cmd: "uv {{.CMD}}"
+
+  lock-py:
+    cmds:
+      - task: uv-run
+        vars: { CMD: "lock" }
+
+  install-py:
+    cmds:
+      - task: uv-run
+        vars: { CMD: "sync" }
+
+  build-py:
+    cmds:
+      - task: uv-run
+        vars: { CMD: "build --all-packages" }
+
+  run-py:
+    vars:
+      APP: core
+    cmds:
+      - task: uv-run
+        vars: { CMD: "run {{.APP}}" }
+
+  lint-py:
+    cmds:
+      - task: uv-run
+        vars: { CMD: "run ruff check" }
+      - task: uv-run
+        vars: { CMD: "run black --diff --check apps packages scripts tests" }
+
+  format-py:
+    cmds:
+      - task: uv-run
+        vars: { CMD: "run ruff check --fix" }
+      - task: uv-run
+        vars: { CMD: "run black apps packages scripts tests" }
+
+  test-py:
+    cmds:
+      - task: uv-run
+        vars: { CMD: "run pytest tests" }
+
+  typing-py:
+    cmds:
+      - task: uv-run
+        vars: { CMD: "run pyright" }

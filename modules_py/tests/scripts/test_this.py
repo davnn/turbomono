@@ -1,5 +1,5 @@
-from this import return_one  # type: ignore
+from this import return_zero  # type: ignore
 
 
-def test_this():
-    assert return_one() == 1
+def test_return_zero():
+    assert return_zero() == 0
